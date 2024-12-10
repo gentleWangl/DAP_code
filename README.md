@@ -4,7 +4,7 @@
 + wddwwd
 * dwdwod
   *****
-  >int a=1;
-  >int b=2;
-  >for(int i=0;i<10;i++)
+  >int a=1;  
+  >int b=2;  
+  >for(int i=0;i<10;i++)  
   >res[i]=is_prime(i*i)? 2*i+1 : 2*i
