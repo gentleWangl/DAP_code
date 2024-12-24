@@ -5,9 +5,9 @@ from db.utils import create_connection, fetch_data_with_join
 
 
 class MainWindow(tk.Tk):
-    def __init__(self):
+    def __init__(self,identity):
         super().__init__()
-
+        self.identity = identity
         self.title("美国总统大选数据库系统")
         self.geometry("1500x900")  # 增大窗口尺寸
         self.config(bg='#f0f0f0')
@@ -165,7 +165,9 @@ class MainWindow(tk.Tk):
         if not selected_items:
             self.show_warning_message("警告", "请选择要删除的数据")
             return
-
+        if self.identity == "user":
+            messagebox.showerror("操作无效！", "您没有此权限")
+            return
         try:
             connection = create_connection()
             cursor = connection.cursor()
@@ -199,6 +201,9 @@ class MainWindow(tk.Tk):
         """添加新记录"""
         if not self.table_name:
             self.show_warning_message("警告", "请先选择一个表！")
+            return
+        if self.identity == "user":
+            messagebox.showerror("操作无效！", "您没有此权限")
             return
 
         # 弹出新窗口，允许用户输入数据
@@ -265,6 +270,7 @@ class MainWindow(tk.Tk):
     def insert_data(self):
         """提交插入数据"""
         # 获取表单数据
+
         data = {col: entry.get() for col, entry in self.entries.items() if entry.get()}
 
         # 检查是否需要手动指定主键
@@ -302,7 +308,9 @@ class MainWindow(tk.Tk):
         if not selected_item:
             self.show_warning_message("警告", "请选择要修改的数据")
             return
-
+        if self.identity == "user":
+            messagebox.showerror("操作无效！", "您没有此权限")
+            return
         # 弹出新窗口，允许用户输入数据
         self.update_window = tk.Toplevel(self)
         self.update_window.title("修改记录")
@@ -396,9 +404,13 @@ class MainWindow(tk.Tk):
         self.status_bar.config(text=message)
 
 
+def main_window(identity):
+    app = MainWindow(identity)
+    app.mainloop()
+
+
 if __name__ == "__main__":
     app = MainWindow()
     app.mainloop()
-
 
 
